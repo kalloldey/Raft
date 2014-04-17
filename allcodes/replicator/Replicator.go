@@ -718,27 +718,6 @@ func TelecomMinistry(rp *Replicator) {
 							//Doubt to clear: Will VOTEDENY will get the current update term from the responder server ??
 						}
 					}
-				case "VOTEME":
-					{ /*
-							serverPid, _ := strconv.Atoi(temp[1])
-							forTerm, _ := strconv.Atoi(temp[2])
-							if rp.CurrentTerm < forTerm {
-								//covert own to follower state rp.
-								SetTerm(rp, forTerm)
-								denmsg := string("VOTEGRANT$" + strconv.Itoa(rp.MyPid) + "$" + strconv.Itoa(forTerm))
-								//					rp.Locker.Lock()
-								rp.LeaderFlag = 0
-								//rp.P("I am GIVING vote to, in term", serverPid, forTerm)
-								rp.BackServer.Outbox() <- &Envelope{Pid: serverPid, MsgId: 0, Msg: denmsg}
-								//					rp.Locker.Unlock()
-							} else {
-								denmsg := string("VOTEDENY$" + strconv.Itoa(rp.MyPid) + "$" + strconv.Itoa(forTerm))
-								//					rp.Locker.Lock()
-								//rp.P("I am DENYing vote to,term ", serverPid, forTerm)
-								rp.BackServer.Outbox() <- &Envelope{Pid: serverPid, MsgId: 0, Msg: denmsg}
-								//					rp.Locker.Unlock()
-							}*/
-					}
 				case "VOTEGRANT":
 					{
 						if rp.LeaderFlag == 1 && forTerm == rp.CurrentTerm {
@@ -770,9 +749,7 @@ func TelecomMinistry(rp *Replicator) {
 			} //String Type Handling Switch Ends here
 		default:
 			{
-				if rp.MyPid == 3 {
-					rp.P("This is a not matched type", 0, 0)
-				}
+				//NO OP
 			}
 		} //switch based on type ...ends here
 	} //for loop ends here
@@ -828,10 +805,10 @@ func GetNew(FileName string, PidArg int) *Replicator {
 		repl.P("Levigo creates error: can not continue"+e.Error(), 0, 0)
 		return nil
 	}
-	repl.InboxChan = make(chan *LogItem, 100)
-	repl.OutboxChan = make(chan interface{}, 100)
-	repl.TempChanOB = make(chan *AEResponse, 100)
-	repl.SendAHBM = make(chan int, 10)
+	repl.InboxChan = make(chan *LogItem, 1000)
+	repl.OutboxChan = make(chan interface{}, 1000)
+	repl.TempChanOB = make(chan *AEResponse, 1000)
+	repl.SendAHBM = make(chan int, 100)
 	repl.CommitIndex = repl.GetCom()  // <-- If Needed to read from persistant storage, use this simply
 	repl.LastLogNr = repl.CommitIndex //no need to read from persistant storage
 	repl.VolatileStore = make([]LogItem, 100)

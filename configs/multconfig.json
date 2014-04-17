@@ -1,0 +1,14 @@
+{
+	"selfHandle":"tcp://127.0.0.1:",
+	"peersPid": "0,1,2,3,4",
+	"peersHandle":"tcp://127.0.0.1:",
+	"startAddress":5000,
+	"startMsgId":1000,
+	"timeoutMin":1500,
+	"timeoutRand":1000,
+	"outputFolder":"/tmp/",
+	"debugLogFile":"DEBUG_REPL_",
+	"debugFlag":3,
+	"levelDbForLog":"LOGDB_",
+	"termFileName":"TERM_"	
+}

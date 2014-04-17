@@ -38,7 +38,7 @@ func (kvc *KVC) Put(key []byte, value []byte) int {
 		select {
 		case <-time.After(time.Duration(kvc.SlaTimeOut) * time.Millisecond):
 			{
-				//fmt.Println("[put]Time Up")
+				fmt.Println("[put]Time Up")
 				return 1
 			}
 		case val := <-kvc.Server.Inbox():
@@ -47,10 +47,10 @@ func (kvc *KVC) Put(key []byte, value []byte) int {
 				case comm.SMResp:
 					res = val.Msg.(comm.SMResp)
 					if res.Error == 1 {
-						//fmt.Println(cmd.RequestId,"Put Bad Response: ", string(res.Value))
+						fmt.Println(cmd.RequestId,"Put Bad Response: ", string(res.Value))
 						return 1
 					} else {
-						//fmt.Println(cmd.RequestId,"Put Good Resp")
+						fmt.Println(cmd.RequestId,"Put Good Resp")
 						return 0
 					}
 				}
@@ -84,6 +84,8 @@ func (kvc *KVC) Get(key []byte) ([]byte, int) {
 			}
 		case val := <-kvc.Server.Inbox():
 			{
+				switch val.Msg.(type) {
+                                case comm.SMResp:
 				res := val.Msg.(comm.SMResp)
 				if res.Error == 1 {
 					//fmt.Println("Get not found")
@@ -94,6 +96,7 @@ func (kvc *KVC) Get(key []byte) ([]byte, int) {
 				} else {
 					//fmt.Println("Get Found")
 					return res.Value, 0
+				}
 				}
 			}
 		}

@@ -1,0 +1,14 @@
+{
+	"selfHandle":"tcp://127.0.0.1:",
+	"peersPid": "0,1,2,3,4,5",
+	"peersHandle":"tcp://127.0.0.1:",
+	"startAddress":5500,
+	"startMsgId":100,
+	"slaTimeout":5000,
+	"totalServer":5,
+	"waitTimeForLeader":1000,
+	"outputFolder":"/tmp/",
+	"kvDbName":"KVSDB_",
+	"debugFlag":2,
+	"debugFile":"KVDEBUG_"
+}

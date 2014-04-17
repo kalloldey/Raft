@@ -115,7 +115,10 @@ func (kvs *KVserver) ApplyToStateMachine() {
 							res.Value = []byte("SUCCESS")
 							res.Error = 0
 						}
-						kvs.RepComplete <- res
+
+						kvs.P("Finally as a Leader Will send to client, req id", com.UserId, res.RequestId)
+						kvs.OuterComm.Outbox() <- &Envelope{Pid: com.UserId, MsgId: 0, Msg: res}
+						kvs.RepComplete <- res //Now can accept the next command
 					}
 				}
 			} //end of case for SMC
@@ -207,8 +210,7 @@ func (kvs *KVserver) RunKVServer() {
 							break
 						}
 					}
-					kvs.P("Send Done to End Client", 0, 0)
-					kvs.OuterComm.Outbox() <- &Envelope{Pid: cmd.UserId, MsgId: 0, Msg: res}
+					//kvs.OuterComm.Outbox() <- &Envelope{Pid: cmd.UserId, MsgId: 0, Msg: res}
 				} else if cmd.Command == "Lead" {
 					res := new(SMResp)
 					res.RequestId = cmd.RequestId
@@ -250,7 +252,7 @@ func KV_init(Replicator_FileName string, PidArg int, Commn_ConfigFile string) *K
 	}
 	kvs.TotalServer = Conf.TotalServer
 	kvs.MyPid = PidArg
-	if kvs.MyPid >= kvs.TotalServer { //error		
+	if kvs.MyPid >= kvs.TotalServer { //error
 		fmt.Println("[Config error]")
 		return nil
 	}

@@ -115,9 +115,9 @@ func New_DirectArg(PidArg int, ArgPeersPid string, ArgStartAddr int, ArgSelfHand
 	//	rfs.Fin.Add(1)
 	//Make the receive and send channels ..
 	//	fmt.Println("Server Instantion done .. returning..")
-	rfs.RecChan = make(chan *Envelope, 100)
+	rfs.RecChan = make(chan *Envelope, 10000)
 	go rfs.recRoutine()
-	rfs.OutChan = make(chan *Envelope, 100)
+	rfs.OutChan = make(chan *Envelope, 10000)
 	go rfs.sendRoutine()
 	return rfs
 } //WR
@@ -158,8 +158,8 @@ func New(FileName string, PidArg int) *Raftserver { //To create the server objec
 	rfs.Server.Bind(rfs.OwnEnd)
 	//Make the receive and send channels ..
 	//	fmt.Println("Server Instantion done .. returning..")
-	rfs.RecChan = make(chan *Envelope, 100)
-	rfs.OutChan = make(chan *Envelope, 100)
+	rfs.RecChan = make(chan *Envelope, 10000)
+	rfs.OutChan = make(chan *Envelope, 10000)
 	go rfs.recRoutine()
 	go rfs.sendRoutine()
 	return rfs
