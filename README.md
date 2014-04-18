@@ -36,6 +36,9 @@ How to use it?
 - There are two configuration file
 - One is for replicator servers and another is for distributed KV servers and clients.
 - Write the config file in the expected manner( described below)
+- cd to the folder allcodes/replicator and run the command *go build*
+- cd to the folder allcodes and run the command *go build ReplicatorMain.go*
+- come back to the parent folder of raft
 - Run the go test to ensure everything is on place.
 - Make your required changes in the config and use for your purpose. BINGO.
 
